@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import enums.eGame;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.stage.FileChooser;
 import poker.app.MainApp;
 
@@ -31,6 +33,43 @@ public class RootLayoutController implements Initializable {
     @FXML
     private Menu mnuGame;
     
+    @FXML
+    public RadioMenuItem FiveCardJoker;
+    @FXML
+    public RadioMenuItem FiveCardWild;
+    @FXML
+    public RadioMenuItem FiveCardDraw;
+    @FXML
+    public RadioMenuItem SevenCardDraw;
+    @FXML
+    public RadioMenuItem TexasHoldem;
+    @FXML
+    public RadioMenuItem OmahaHoldem;
+    @FXML
+    private RadioMenuItem Close;
+    
+    public eGame GameSelect(){
+    	
+    	if (FiveCardJoker.isSelected()){
+    		return(eGame.FiveStudOneJoker);
+    	}
+    	else if (FiveCardWild.isSelected()){
+    		return(eGame.FiveStudTwoJoker);
+    	}
+    	else if(FiveCardDraw.isSelected()){
+    		return(eGame.FiveStud);
+    	}
+    	else if(SevenCardDraw.isSelected()){
+    		return(eGame.SevenDraw);
+    	}
+    	else if(TexasHoldem.isSelected()){
+    		return(eGame.TexasHoldEm);
+    	}
+    	else if(OmahaHoldem.isSelected()){
+    		return(eGame.Omaha);
+    	}
+    	else{return null;}
+    }
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

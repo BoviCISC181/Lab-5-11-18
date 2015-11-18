@@ -1,5 +1,6 @@
 package poker.app.view;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -19,12 +20,17 @@ import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.SequentialTransitionBuilder;
 import javafx.animation.TranslateTransition;
+import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -36,8 +42,15 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import poker.app.MainApp;
 import pokerBase.Card;
@@ -47,11 +60,13 @@ import pokerBase.GamePlayPlayerHand;
 import pokerBase.Hand;
 import pokerBase.Player;
 import pokerBase.Rule;
+import pokerBase.Table;
 import pokerBase.Action;
 import pokerEnums.eDrawAction;
 import pokerEnums.eGameState;
+import poker.app.view.RootLayoutController;
 
-public class PokerTableController {
+public class PokerTableController{
 
 	boolean bPlay = false;
 
@@ -126,6 +141,9 @@ public class PokerTableController {
 
 	@FXML
 	public Button btnPlay;
+	
+	@FXML
+	public Button okbutton;
 
 	private eGameState eGameState;
 
@@ -248,7 +266,7 @@ public class PokerTableController {
 		HboxCommunityCards.getChildren().clear();
 
 		// Get the Rule, start the Game
-		Rule rle = new Rule(eGame.Omaha);
+		Rule rle = new Rule(GameSelect());
 		gme = new GamePlay(rle);
 
 		// Add the seated players to the game, create a GPPH for the player
@@ -397,6 +415,7 @@ public class PokerTableController {
 			Hand WinningHand = Hand.PickBestHand(BestPlayerHands);
 			Player WinningPlayer = (Player) hsPlayerHand.get(WinningHand);
 			System.out.println("Winning Player Position: " + WinningPlayer.getiPlayerPosition());
+			displayWinner("Winning Player Position: " + WinningPlayer.getiPlayerPosition());
 			SetGameControls(eGameState.EndOfGame);
 
 		} else {
@@ -431,6 +450,45 @@ public class PokerTableController {
 
 	}
 
+	private void displayWinner(String winner){
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Winner!");
+		alert.setHeaderText("You're Winner!");
+		alert.setContentText(winner);
+
+		alert.showAndWait();
+		
+		//		final AnchorPane winnerMainScreen;
+//		final Stage winnerBox = new Stage();
+//		winnerBox.initModality(Modality.WINDOW_MODAL);
+//		
+//		Button okButton = new Button("Okay");
+//        okButton.setOnAction(new EventHandler<ActionEvent>(){
+//
+//            @Override
+//            public void handle(ActionEvent arg0) {
+//                winnerBox.close();
+//            }
+//        });
+//        try {
+//			// Load person overview.
+//			FXMLLoader loader = new FXMLLoader();
+//			loader.setLocation(MainApp.class.getResource("view/WinnerModal.fxml"));
+//			AnchorPane personOverview = (AnchorPane) loader.load();
+
+			// Set person overview into the center of root layout.
+//			rootLayout.setCenter(personOverview);
+
+			// Give the controller access to the main app.
+			//PokerTableController controller = loader.getController();
+			//controller.setMainApp(this);
+
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+    }
+	
 	private SequentialTransition CalculateTransition(Card c, HBox PlayerCardBox, ImageView imView, int iCardDrawn) {
 		// This is the card that is going to be dealt to the player.
 		String strCard = "/res/img/" + c.getCardImg();
