@@ -48,28 +48,53 @@ public class RootLayoutController implements Initializable {
     @FXML
     private RadioMenuItem Close;
     
-    public eGame GameSelect(){
-    	
-    	if (FiveCardJoker.isSelected()){
-    		return(eGame.FiveStudOneJoker);
-    	}
-    	else if (FiveCardWild.isSelected()){
-    		return(eGame.FiveStudTwoJoker);
-    	}
-    	else if(FiveCardDraw.isSelected()){
-    		return(eGame.FiveStud);
-    	}
-    	else if(SevenCardDraw.isSelected()){
-    		return(eGame.SevenDraw);
-    	}
-    	else if(TexasHoldem.isSelected()){
-    		return(eGame.TexasHoldEm);
-    	}
-    	else if(OmahaHoldem.isSelected()){
-    		return(eGame.Omaha);
-    	}
-    	else{return null;}
-    }
+	public void GameSelect(){
+	    	
+	    	if (FiveCardJoker.isSelected()){
+	    		this.mainApp.setiGameType(eGame.FiveStudOneJoker);
+	    	}
+	    	else if (FiveCardWild.isSelected()){
+	    		this.mainApp.setiGameType(eGame.FiveStudTwoJoker);
+	    	}
+	    	else if(FiveCardDraw.isSelected()){
+	    		this.mainApp.setiGameType(eGame.FiveStud);
+	    	}
+	    	else if(SevenCardDraw.isSelected()){
+	    		this.mainApp.setiGameType(eGame.SevenDraw);
+	    	}
+	    	else if(TexasHoldem.isSelected()){
+	    		this.mainApp.setiGameType(eGame.TexasHoldEm);
+	    	}
+	    	else if(OmahaHoldem.isSelected()){
+	    		this.mainApp.setiGameType(eGame.Omaha);
+	    	}
+	    	else{
+	    		//do nothing
+	    	}
+	    }
+    
+//    public eGame GameSelect(){
+//    	
+//    	if (FiveCardJoker.isSelected()){
+//    		return(eGame.FiveStudOneJoker);
+//    	}
+//    	else if (FiveCardWild.isSelected()){
+//    		return(eGame.FiveStudTwoJoker);
+//    	}
+//    	else if(FiveCardDraw.isSelected()){
+//    		return(eGame.FiveStud);
+//    	}
+//    	else if(SevenCardDraw.isSelected()){
+//    		return(eGame.SevenDraw);
+//    	}
+//    	else if(TexasHoldem.isSelected()){
+//    		return(eGame.TexasHoldEm);
+//    	}
+//    	else if(OmahaHoldem.isSelected()){
+//    		return(eGame.Omaha);
+//    	}
+//    	else{return null;}
+//    }
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

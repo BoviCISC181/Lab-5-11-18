@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import enums.eGame;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -39,7 +40,7 @@ public class MainApp extends Application {
 	
 	private Table tbl;
 	
-	private int iGameType;
+	private eGame iGameType;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -133,11 +134,11 @@ public class MainApp extends Application {
 		tbl.removePlayer(playerToRemove);		
 	}
 
-	public int getiGameType() {
+	public eGame getiGameType() {
 		return iGameType;
 	}
 
-	public void setiGameType(int iGameType) {
+	public void setiGameType(eGame iGameType) {
 		this.iGameType = iGameType;
 	}
 	

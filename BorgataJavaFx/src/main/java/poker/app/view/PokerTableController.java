@@ -170,6 +170,12 @@ public class PokerTableController{
 
 	@FXML
 	private void handleP1SitLeave() {
+		
+		if (this.iCardDrawn!=0){
+			displayWarning("Players must wait until the current game is over.");
+			return;
+		}
+		
 		int iPlayerPosition = 1;
 		btnP1SitLeave.setDisable(true);
 		bP1Sit = handleSitLeave(bP1Sit, iPlayerPosition, lblP1Name, txtP1Name, btnP1SitLeave, hBoxP1Cards);
@@ -178,6 +184,12 @@ public class PokerTableController{
 
 	@FXML
 	private void handleP2SitLeave() {
+		
+		if (this.iCardDrawn!=0){
+			displayWarning("Players must wait until the current game is over.");
+			return;
+		}
+		
 		int iPlayerPosition = 2;
 		btnP2SitLeave.setDisable(true);
 		bP2Sit = handleSitLeave(bP2Sit, iPlayerPosition, lblP2Name, txtP2Name, btnP2SitLeave, hBoxP2Cards);
@@ -186,6 +198,12 @@ public class PokerTableController{
 
 	@FXML
 	private void handleP3SitLeave() {
+		
+		if (this.iCardDrawn!=0){
+			displayWarning("Players must wait until the current game is over.");
+			return;
+		}
+		
 		int iPlayerPosition = 3;
 		btnP3SitLeave.setDisable(true);
 		bP3Sit = handleSitLeave(bP3Sit, iPlayerPosition, lblP3Name, txtP3Name, btnP3SitLeave, hBoxP3Cards);
@@ -194,6 +212,12 @@ public class PokerTableController{
 
 	@FXML
 	private void handleP4SitLeave() {
+		
+		if (this.iCardDrawn!=0){
+			displayWarning("Players must wait until the current game is over.");
+			return;
+		}
+		
 		int iPlayerPosition = 4;
 		btnP4SitLeave.setDisable(true);
 		bP4Sit = handleSitLeave(bP4Sit, iPlayerPosition, lblP4Name, txtP4Name, btnP4SitLeave, hBoxP4Cards);
@@ -264,9 +288,17 @@ public class PokerTableController{
 		HboxCommonArea.getChildren().clear();
 		HboxCommonArea.getChildren().add(imgBottomCard);
 		HboxCommunityCards.getChildren().clear();
-
+		
+		//ensures play cannot be pressed without selecting a game type
+		// this still allows you to hit draw, so something more robust is needed, 
+		// or something has to be added to handleDraw()
+		if (this.mainApp.getiGameType()==null){
+			displayWarning("you must select a game to play from the menu");
+			return;
+		}
+		
 		// Get the Rule, start the Game
-		Rule rle = new Rule(GameSelect());
+		Rule rle = new Rule(this.mainApp.getiGameType());
 		gme = new GamePlay(rle);
 
 		// Add the seated players to the game, create a GPPH for the player
@@ -329,6 +361,12 @@ public class PokerTableController{
 
 	@FXML
 	private void handleDraw() {
+		
+		if (this.mainApp.getiGameType()==null){
+			displayWarning("you must select a game to play from the menu");
+			return;
+		}
+		
 		iCardDrawn++;
 		iDrawCount++;
 		ImageView imView = null;
@@ -414,8 +452,8 @@ public class PokerTableController{
 
 			Hand WinningHand = Hand.PickBestHand(BestPlayerHands);
 			Player WinningPlayer = (Player) hsPlayerHand.get(WinningHand);
-			System.out.println("Winning Player Position: " + WinningPlayer.getiPlayerPosition());
-			displayWinner("Winning Player Position: " + WinningPlayer.getiPlayerPosition());
+			System.out.println("Winning Player Position: " + WinningPlayer.getiPlayerPosition() + "("+ WinningPlayer.getPlayerName() + ")");
+			displayWinner("Winning Player Position: " + WinningPlayer.getiPlayerPosition() + " ("+ WinningPlayer.getPlayerName() + ")");
 			SetGameControls(eGameState.EndOfGame);
 
 		} else {
@@ -450,6 +488,16 @@ public class PokerTableController{
 
 	}
 
+	private void displayWarning(String warning){
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Warning!");
+		alert.setHeaderText("Wait!");
+		alert.setContentText(warning);
+
+		alert.showAndWait();
+    }
+	
 	private void displayWinner(String winner){
 		
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -458,35 +506,6 @@ public class PokerTableController{
 		alert.setContentText(winner);
 
 		alert.showAndWait();
-		
-		//		final AnchorPane winnerMainScreen;
-//		final Stage winnerBox = new Stage();
-//		winnerBox.initModality(Modality.WINDOW_MODAL);
-//		
-//		Button okButton = new Button("Okay");
-//        okButton.setOnAction(new EventHandler<ActionEvent>(){
-//
-//            @Override
-//            public void handle(ActionEvent arg0) {
-//                winnerBox.close();
-//            }
-//        });
-//        try {
-//			// Load person overview.
-//			FXMLLoader loader = new FXMLLoader();
-//			loader.setLocation(MainApp.class.getResource("view/WinnerModal.fxml"));
-//			AnchorPane personOverview = (AnchorPane) loader.load();
-
-			// Set person overview into the center of root layout.
-//			rootLayout.setCenter(personOverview);
-
-			// Give the controller access to the main app.
-			//PokerTableController controller = loader.getController();
-			//controller.setMainApp(this);
-
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
     }
 	
 	private SequentialTransition CalculateTransition(Card c, HBox PlayerCardBox, ImageView imView, int iCardDrawn) {
